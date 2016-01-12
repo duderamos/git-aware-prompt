@@ -20,7 +20,16 @@ find_git_dirty() {
   fi
 }
 
-PROMPT_COMMAND="find_git_branch; find_git_dirty; $PROMPT_COMMAND"
+find_git_project() {
+  local project
+  if project=$(git rev-parse --show-toplevel 2> /dev/null); then
+    git_project="$(basename $project)"
+  else
+    git_project=''
+  fi
+}
+
+PROMPT_COMMAND="find_git_branch; find_git_dirty; find_git_project; $PROMPT_COMMAND"
 
 # Default Git enabled prompt with dirty state
 # export PS1="\u@\h \w \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
